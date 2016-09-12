@@ -9,6 +9,8 @@ gem 'sinatra', :require => false
 gem 'rails', '4.2.2'
 # Use sqlite3 as the database for Active Record
 gem 'sqlite3'
+# Tiny_grabber by moroznoyeytpo (for download data from hh.ru)
+gem 'tiny_grabber'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
