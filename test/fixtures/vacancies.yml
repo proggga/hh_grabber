@@ -1,0 +1,23 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  url: MyString
+  name: MyString
+  company: MyString
+  salary_from: 1.5
+  salary_to: 1.5
+  city: MyString
+  metro_station: MyString
+  expirience: MyString
+  desciption: MyText
+
+two:
+  url: MyString
+  name: MyString
+  company: MyString
+  salary_from: 1.5
+  salary_to: 1.5
+  city: MyString
+  metro_station: MyString
+  expirience: MyString
+  desciption: MyText
