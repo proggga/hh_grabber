@@ -10,10 +10,13 @@ class DownloadWorker
     main_server = "https://spb.hh.ru"
     headers = { 'Content-Type' => 'text/html; charset=utf-8' }
     tg = TinyGrabber.new
-    tg.debug = { active: true, destination: :print, save_html: true }
+    tg.debug = { active: false, destination: :print, save_html: true }
     tg.headers = headers
     tg.user_agent = user_agent
     main_url = main_server + "/search/vacancy?text=#{keyword}" if not main_url
+
+    puts main_url
+
     url = main_url.dup
     begin
       response = tg.get url, headers
@@ -26,9 +29,10 @@ class DownloadWorker
     ng.css('a.search-result-item__name').each do |alink|
       vacancies_urls[alink.text] = alink['href']
     end
-#    vacancies_urls.each do | name, href |
-#      print "#{name} #{href}\n"
-#    end
+    vacancies_urls.each do | name, href |
+      print "#{name} #{href}\n"
+      Sidekiq::Client.push('queue' => 'proceed', 'class' => ProceedWorker, 'args' => [name, href])
+    end
     if add_pages
       pages_urls = {}
       ng.css('li[data-qa="pager-page"]>a.HH-Pager-Control').each do |alink|
@@ -37,19 +41,16 @@ class DownloadWorker
         if page != '...'
           page_id = page.to_i
           if page_id > worker_page_id
-            puts page_id.class
             pages_urls[page_id] = main_server + alink['href']
           end
         end
       end
       pages_urls.each do | page_id, link |
         add_pages_flag = page_id == pages_urls.keys.max
-        print "#{keyword} #{link} #{page_id} #{add_pages_flag}\n"
-        DownloadWorker.perform_async(keyword, link, page_id, add_pages = add_pages_flag)
+        queue_push = add_pages_flag ? 'download' : 'collect'
+        print "[#{worker_page_id}]PUT #{queue_push} #{link} #{page_id}\n"
+        Sidekiq::Client.push('queue' => queue_push, 'class' => DownloadWorker, 'args' => [keyword, link, page_id, add_pages_flag])
       end
-
-
-      print pages_urls
     end
   end
 end
