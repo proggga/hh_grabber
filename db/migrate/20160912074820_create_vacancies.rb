@@ -4,10 +4,8 @@ class CreateVacancies < ActiveRecord::Migration
       t.string :url
       t.string :name
       t.string :company
-      t.float :salary_from
-      t.float :salary_to
+      t.string :salary
       t.string :city
-      t.string :metro_station
       t.string :expirience
       t.text :desciption
 

@@ -1,11 +1,17 @@
 ---
-:concurrency: 1
+:concurrency: 5
 :pidfile: tmp/pids/sidekiq.pid
 :queues:
-  - download
-  - collect
-#  - proceed
+  - ['download', 4]
+  - ['collect', 3]
+  - ['proceed', 2]
+  - ['save', 1]
 
+:limits:
+  download: 5
+  collect: 5
+  proceed: 5
+  save: 1
 #  - [ download, 3 ]
 #  - [ collect, 2 ]
 #  - [ proceed, 1 ]

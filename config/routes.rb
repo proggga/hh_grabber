@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   #   get 'products/:id' => 'catalog#view'
   mount Sidekiq::Web => '/sidekiq'
   get 'run' => 'startworker#run'
+  get 'test' => 'startworker#test'
 
   # Example of named route that can be invoked with purchase_url(id: product.id)
   #   get 'products/:id/purchase' => 'catalog#purchase', as: :purchase

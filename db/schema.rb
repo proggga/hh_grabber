@@ -17,14 +17,12 @@ ActiveRecord::Schema.define(version: 20160912074820) do
     t.string   "url"
     t.string   "name"
     t.string   "company"
-    t.float    "salary_from"
-    t.float    "salary_to"
+    t.string   "salary"
     t.string   "city"
-    t.string   "metro_station"
     t.string   "expirience"
     t.text     "desciption"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
 end
