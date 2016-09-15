@@ -15,14 +15,15 @@ ActiveRecord::Schema.define(version: 20160912074820) do
 
   create_table "vacancies", force: :cascade do |t|
     t.string   "url"
+    t.string   "parent_url"
     t.string   "name"
     t.string   "company"
     t.string   "salary"
     t.string   "city"
     t.string   "expirience"
-    t.text     "desciption"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.text     "description"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
   end
 
 end

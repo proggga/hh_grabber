@@ -26,7 +26,7 @@ class DownloadWorker
     #print response.body
     ng = response.ng
     vacancies_urls = {}
-    links = ng.css('a.search-result-item__name')
+    links = ng.css('div.search-result-item__head > a.search-result-item__name.search-result-item__name_standard')
     print "links size #{links.size}\n"
     links.each do |alink|
       vacancies_urls[alink['href']] = alink.text
@@ -34,7 +34,7 @@ class DownloadWorker
     print "vacancies size #{vacancies_urls.size}\n"
     vacancies_urls.each do | href, name |
       #print "#{name} #{href}\n"
-      Sidekiq::Client.push('queue' => 'proceed', 'class' => ProceedWorker, 'args' => [name, href])
+      Sidekiq::Client.push('queue' => 'proceed', 'class' => ProceedWorker, 'args' => [name, href, main_url])
     end
     if add_pages
       pages_urls = {}

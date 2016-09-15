@@ -5,9 +5,9 @@ class SaveWorker
   include Sidekiq::Worker
   sidekiq_options :queue => :save, :retry => true, :backtrace => false
 
-  def perform(url, name, company, salary, city, expirience)
+  def perform(url, parent_url, name, company, salary, city, expirience, description)
     Vacancy.transaction do
-      vacancy = Vacancy.create(url: url, name:  name, company: company, salary: salary, city: city, expirience: expirience)
+      Vacancy.create(url: url, parent_url: parent_url, name:  name, company: company, salary: salary, city: city, expirience: expirience, description: description)
     end
   end
 end

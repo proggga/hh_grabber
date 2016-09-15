@@ -5,7 +5,7 @@ class ProceedWorker
   include Sidekiq::Worker
   sidekiq_options :queue => :proceed, :retry => true, :backtrace => false
 
-  def perform(name, url)
+  def perform(name, url, parent_url)
     if not Vacancy.exists?(url: url)
       user_agent = 'curl/7.24.0'
       headers = { 'Content-Type' => 'text/html; charset=utf-8' }
@@ -28,9 +28,10 @@ class ProceedWorker
       end
       city = ng.css('td.l-content-colum-2.b-v-info-content > div').text
       expirience = ng.css('td.l-content-colum-3.b-v-info-content > div').text
+      description = ng.css('div.b-vacancy-desc > div.b-vacancy-desc-wrapper').text
       print "#{name} #{company} #{salary} #{city} #{expirience}\n"
 
-      SaveWorker.perform_async(url, name, company, salary, city, expirience)
+      SaveWorker.perform_async(url, parent_url, name, company, salary, city, expirience, description)
     end
   end
 end
